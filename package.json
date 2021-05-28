@@ -1,0 +1,75 @@
+{
+  "name": "cypress-axe-core",
+  "version": "0.0.1",
+  "license": "MIT",
+  "description": "Test accessibility with axe-core in Cypress",
+  "homepage": "https://github.com/mcha-dev/cypress-axe-core",
+  "repository": "mcha-dev/cypress-axe-core",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint . --cache --fix",
+    "pretest": "npm run lint",
+    "test": "npm run test:e2e:ci",
+    "posttest": "npm run format",
+    "format": "prettier --loglevel warn --write \"**/*.{js,md}\"",
+    "prepublishOnly": "npm run build",
+    "start": "http-server test",
+    "cypress": "cypress open",
+    "cypress:headless": "cypress run --browser chrome --headless",
+    "test:e2e": "start-server-and-test start 8080 cypress",
+    "test:e2e:ci": "start-server-and-test start 8080 cypress:headless"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "peerDependencies": {
+    "axe-core": "^3 || ^4",
+    "cypress": "^3 || ^4 || ^5 || ^6 || ^7"
+  },
+  "devDependencies": {
+    "@types/node": "^15.6.1",
+    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/parser": "^4.25.0",
+    "axe-core": "^4",
+    "cypress": "^7",
+    "eslint": "^7.27.0",
+    "eslint-config-tamia": "^7.2.6",
+    "http-server": "^0.12.3",
+    "husky": "^4.3.0",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.0",
+    "start-server-and-test": "^1.12.3",
+    "typescript": "^4.3.2"
+  },
+  "authors": [
+    {
+      "name": "Andy Van Slaars",
+      "url": "https://vanslaars.io"
+    },
+    {
+      "name": "Artem Sapegin",
+      "url": "https://sapegin.me"
+    }
+  ],
+  "keywords": [
+    "a11y",
+    "accessibility",
+    "axe",
+    "axe-core",
+    "cypress"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,md}": "prettier --write"
+  }
+}
