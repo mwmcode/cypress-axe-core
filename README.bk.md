@@ -1,19 +1,21 @@
-# cypress-axe-core
+> ❗️forked from [cypress-axe](https://github.com/component-driven/cypress-axe)
+>
+> 👀 watch [RFC 75](https://github.com/component-driven/cypress-axe/issues/75)
+>
+> TODO: update example
+>
+# cypress-axe
 
-[![npm](https://img.shields.io/npm/v/cypress-axe-core.svg)](https://www.npmjs.com/package/cypress-axe-core) [![Node.js CI status](https://github.com/mcha-dev/cypress-axe-core/workflows/Node.js%20CI/badge.svg)](https://github.com/mcha-dev/cypress-axe-core/actions)
+[![npm](https://img.shields.io/npm/v/cypress-axe.svg)](https://www.npmjs.com/package/cypress-axe) [![Node.js CI status](https://github.com/component-driven/cypress-axe/workflows/Node.js%20CI/badge.svg)](https://github.com/component-driven/cypress-axe/actions)
 
 Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cypress](https://cypress.io).
 
-> ### Forked from [cypress-axe](https://github.com/component-driven/cypress-axe) ⑂
->
-> **Reasons**: to upgrade dependencies (i.e. `Cypress ^7` & `axe-core ^4`) and try out some of the suggesions in [RFC 75](https://github.com/component-driven/cypress-axe/issues/75) 👀
-
 ## Installation
 
-1. **Install `cypress-axe-core` from npm:**
+1. **Install `cypress-axe` from npm:**
 
 ```sh
-npm install --save-dev cypress-axe-core
+npm install --save-dev cypress-axe
 ```
 
 2. **Install peer dependencies:**
@@ -25,14 +27,14 @@ npm install --save-dev cypress axe-core
 3. **Include the commands.** Update `cypress/support/index.js` file to include the cypress-axe commands by adding:
 
 ```js
-import 'cypress-axe-core'
+import 'cypress-axe'
 ```
 
 4. **Add a task to log the messages to the terminal** when Cypress executes the spec files. [Example - configuring log task](https://docs.cypress.io/api/commands/task.html#Usage).
 
 ### TypeScript
 
-If you’re using TypeScript, add cypress-axe-core types to your Cypress’ `tsconfig.json` file:
+If you’re using TypeScript, add cypress-axe types to your Cypress’ `tsconfig.json` file:
 
 ```json
 {
@@ -40,59 +42,10 @@ If you’re using TypeScript, add cypress-axe-core types to your Cypress’ `tsc
     "baseUrl": "./",
     "target": "es5",
     "lib": ["esnext", "dom"],
-    "types": ["cypress", "cypress-axe-core"]
+    "types": ["cypress", "cypress-axe"]
   },
   "include": ["."]
 }
-```
-
-## Usage
-
-### Simple check
-
-```js
-it('passes axe', () => {
-  cy.visit('/')
-  cy.injectAxe()
-  // ...
-  cy.get('button').checkA11y() // check certain elements only
-  // OR
-  cy.checkA11y() // check the whole document
-})
-```
-
-### Customized check
-
-You can provide `shouldFail` function to decide which rules should fail. For example, only assert against _serious_ & _critical_ violations but ignore _color-contrast_ rule
-
-```js
-// cypress/support/commands.js
-Cypress.Commands.add(
-  'checkAxeViolations',
-  { prevSubject: 'optional' },
-  (subject, options, label) => {
-    return cy.checkA11y(
-      {
-        shouldFail: violations =>
-          violations.filter(
-            v =>
-              v.id !== 'color-contrast' &&
-              ['serious', 'critical'].includes(v.impact)
-          ),
-        ...options
-      },
-      label
-    )
-  }
-)
-
-// some.spec.js
-it('passes custom axe tests', () => {
-  cy.visit('/')
-  cy.injectAxe()
-  // ...
-  cy.checkAxeViolations() // 👈
-})
 ```
 
 ## Commands
@@ -159,7 +112,7 @@ The `includedImpacts` key is an array of strings that map to `impact` levels in 
 
 Filtering based on impact in combination with the `skipFailures` argument allows you to introduce `cypress-axe` into tests for a legacy application without failing in CI before you have an opportunity to address accessibility issues. Ideally, you would steadily move towards stricter testing as you address issues.
 
-##### violationsCallback (optional)
+##### violationCallback (optional)
 
 Allows you to define a callback that receives the violations for custom side-effects, such as adding custom output to the terminal.
 
@@ -209,8 +162,10 @@ it('Has no a11y violations after button click', () => {
 
 it('Only logs a11y violations while allowing the test to pass', () => {
   // Do not fail the test when there are accessibility failures
-  cy.checkA11y(null, null, null, { skipFailures: true })
+  cy.checkA11y(null, null, null, {skipFailures: true});
 })
+
+
 ```
 
 #### Using the violationCallback argument
