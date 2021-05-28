@@ -1,6 +1,6 @@
 import axe from 'axe-core';
 
-export function assertViolations(violations: axe.Result[]) {
+export function assertViolations(violations: axe.Result[] = []) {
 	const violationsCount = violations.length;
 	const oneViolation = violationsCount === 1;
 
