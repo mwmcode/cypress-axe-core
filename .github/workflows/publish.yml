@@ -8,6 +8,12 @@ on:
     branches: [ main ]
   pull_request:
     branches: '*'
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Manually running workflow...'
+        required: true
+        default: 'To check'
 
 jobs:
   build:
