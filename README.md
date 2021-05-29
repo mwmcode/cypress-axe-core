@@ -15,10 +15,10 @@ Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cy
     - [Simple](#Simple)
     - [Customised](#Customised)
 3. [Commands](#Commands)
-    - [cy.injectAxe](#cy.injectAxe)
-    - [cy.checkA11y](#cy.checkA11y)
-    - [cy.configureCypressAxe](#cy.configureCypressAxe)
-    - [cy.configureAxe](#cy.configureAxe)
+    - [cy.injectAxe](#cyinjectAxe)
+    - [cy.checkA11y](#cycheckA11y)
+    - [cy.configureCypressAxe](#cyconfigureCypressAxe)
+    - [cy.configureAxe](#cyconfigureAxe)
 
 # Installation and Setup
 1. **Install** required packages
@@ -53,7 +53,7 @@ module.exports = (on, config) => {
 	});
 };
 ```
-> **NOTE**: You can control how results are displayed via [the `violationsCallback` config option](#cy.configureCypressAxe)
+> **NOTE**: You can control how results are displayed via [the `violationsCallback` config option](#cyconfigureCypressAxe)
 
 After following the steps above (_and defining cy.tasks_), violations will be displayed as follows:
 - Cypress
@@ -152,7 +152,7 @@ beforeEach(() => {
 
 ## cy.checkA11y
 
-When not chained to another element, it will run against the whole document. You can have it at the end of your test (after other interaction assertions) so it checks against all possible violations. It accepts the same (optional) config object that [`cy.configureCypressAxe`](#cy.configureCypressAxe) accepts
+When not chained to another element, it will run against the whole document. You can have it at the end of your test (after other interaction assertions) so it checks against all possible violations. It accepts the same (optional) config object that [`cy.configureCypressAxe`](#cyconfigureCypressAxe) accepts
 
 **Note**: if you have a toggle-able element i.e. a side menu, make sure it's on (shown) by the time `cy.checkA11y` is called, otherwise you might end up with some false-positive cases. Or, you can target those elements directly to make sure they're tested
 ```js
