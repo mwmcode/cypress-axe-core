@@ -1,7 +1,7 @@
 import { RunResults } from '../types';
 
-export function consoleReporter(rr: RunResults) {
-	const { filename, label, results } = rr;
+export function consoleReporter(runRes: RunResults) {
+	const { filename, label, results } = runRes;
 	const violationsCount = results.length;
   const isMoreThanOne = violationsCount > 1;
 

@@ -8,30 +8,67 @@ Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cy
 >
 > **Reasons**: to upgrade dependencies (i.e. `Cypress ^7` & `axe-core ^4`) and try out some of the suggesions in [RFC 75](https://github.com/component-driven/cypress-axe/issues/75) 👀
 
-## Installation
 
-1. **Install `cypress-axe-core` from npm:**
+1. [Installation and Setup](#Installation-and-Setup)
+    - [Typescript](###TypeScript)
+2. [Examples](#Examples)
+    - [Simple](##Simple)
+    - [Customised](##Customised)
+3. [Commands](#Commands)
+    - [cy.injectAxe](##cy.injectAxe)
+    - [cy.checkA11y](##cy.checkA11y)
+    - [cy.configureCypressAxe](##cy.configureCypressAxe)
+    - [cy.configureAxe](##cy.configureAxe)
 
+
+# Installation and Setup
+1. **Install** required packages
 ```sh
 npm install --save-dev cypress-axe-core
 ```
-
-2. **Install peer dependencies:**
-
+As its name implies, this package has two peer dependencies: [cypress](https://github.com/cypress-io) and [axe-core](https://github.com/dequelabs/axe-core)
 ```sh
 npm install --save-dev cypress axe-core
 ```
 
-3. **Include the commands.** Update `cypress/support/index.js` file to include the cypress-axe commands by adding:
+2. **Include the commands.** Update `cypress/support/index.js` file to include the cypress-axe commands by adding:
 
 ```js
 import 'cypress-axe-core'
 ```
 
-4. **Add a task to log the messages to the terminal** when Cypress executes the spec files. [Example - configuring log task](https://docs.cypress.io/api/commands/task.html#Usage).
+3. **Enable logging results to terminal** by defining _logging_ tasks in cypress `plugins/index.js`.
+```js
+// cypress/plugins/index.js
+module.exports = (on, config) => {
+	on('task', {
+		log(message) {
+			console.log(message);
+			return null;
+		},
+
+		table(message) {
+			console.table(message);
+			return null;
+		},
+	});
+};
+```
+> **NOTE**: You can control how results are displayed via [the `violationsCallback` config option](##cy.configureCypressAxe)
+
+After following the steps above (_and defining cy.tasks_), violations will be displayed as follows:
+- Cypress output
+![Default Cypress output](cypressOutputSample.png)
+
+- Terminal
+![Default terminal output](terminalOutputSample.png)
+
+- Browser console
+![Default browser console output](browserOutputSample.png)
+
+
 
 ### TypeScript
-
 If you’re using TypeScript, add cypress-axe-core types to your Cypress’ `tsconfig.json` file:
 
 ```json
@@ -46,24 +83,29 @@ If you’re using TypeScript, add cypress-axe-core types to your Cypress’ `tsc
 }
 ```
 
-## Usage
+# Examples
 
-### Simple check
+## Simple
 
 ```js
 it('passes axe', () => {
   cy.visit('/')
   cy.injectAxe()
   // ...
-  cy.get('button').checkA11y() // check certain elements only
+  cy.get('.my-button').checkA11y() // target certain elements
   // OR
   cy.checkA11y() // check the whole document
 })
 ```
 
-### Customized check
+## Customised
 
-You can provide `shouldFail` function to decide which rules should fail. For example, only assert against _serious_ & _critical_ violations but ignore _color-contrast_ rule
+Leveraging ([Cypress commands](https://docs.cypress.io/api/cypress-api/custom-commands)) You can either:
+
+- Overwrite `cy.checkA11y` _or_
+- Wrap it in your own custom command
+
+then pass it a `shouldFailFn` function to decide which rules should fail. For example, only assert against _serious_ & _critical_ violations but ignore _color-contrast_ rule.
 
 ```js
 // cypress/support/commands.js
@@ -73,7 +115,7 @@ Cypress.Commands.add(
   (subject, options, label) => {
     return cy.checkA11y(
       {
-        shouldFail: violations =>
+        shouldFailFn: violations =>
           violations.filter(
             v =>
               v.id !== 'color-contrast' &&
@@ -95,9 +137,9 @@ it('passes custom axe tests', () => {
 })
 ```
 
-## Commands
+# Commands
 
-### cy.injectAxe
+## cy.injectAxe
 
 This will inject the `axe-core` runtime into the page under test. You must run this **after** a call to `cy.visit()` and before you run the `checkA11y` command.
 
@@ -110,9 +152,40 @@ beforeEach(() => {
 })
 ```
 
-### cy.configureAxe
+## cy.checkA11y
 
-#### Purpose
+When not chained to another element, it will run against the whole document. You can have it at the end of your test (after other interaction assertions) so it checks against all possible violations. It accepts the same (optional) config object that [`cy.configureCypressAxe`](##cy.configureCypressAxe) accepts
+
+**Note**: if you have a toggle-able element i.e. a side menu, make sure it's on (shown) by the time `cy.checkA11y` is called, otherwise you might end up with some false-positive cases. Or, you can target those elements directly to make sure they're tested
+```js
+cy.get('#menu-button').click();
+cy.get('#side-menu-container').checkA11y()
+```
+
+## cy.configureCypressAxe
+
+Instead of wrapping or overwriting `cy.checkA11y`, you can configure it. It accepts the following:
+- `axeOptions` passed to axe-core.
+- `shouldFailFn` function that returns array of violations to check for.
+- `skipFailures` if true, it will log the violations but not assert against them.
+- `violationsCallback` reporter function that receives the result.
+
+**The default** `violationsCallback` function assumes that `cy.task('log')` and `cy.task('table')` have been defined already during the [Installation & setup](##Installation-and-Setup). If you don't want to define those tasks, you can pass a function here to control how results are outputted.
+
+```js
+cy.configureCypressAxe({
+  axeOptions: [], // axe.RunOptions[]
+  shouldFailFn: violations => violations,
+  skipFailures: false,
+  violationsCallback: ({
+    filename: 'test.spec.ts', // spec filename
+    results: [], // violations axe.Result[]
+    label: 'my custom component', // if passed to checkA11y
+  }) => void,
+})
+```
+
+## cy.configureAxe
 
 To configure the format of the data used by aXe. This can be used to add new rules, which must be registered with the library to execute.
 
@@ -138,149 +211,6 @@ it('Has no detectable a11y violations on load (custom configuration)', () => {
   cy.checkA11y()
 })
 ```
-
-### cy.checkA11y
-
-This will run axe against the document at the point in which it is called. This means you can call this after interacting with your page and uncover accessibility issues introduced as a result of rendering in response to user actions.
-
-#### Parameters on cy.checkA11y (axe.run)
-
-##### context (optional)
-
-Defines the scope of the analysis - the part of the DOM that you would like to analyze. This will typically be the document or a specific selector such as class name, ID, selector, etc.
-
-##### options (optional)
-
-Set of options passed into rules or checks, temporarily modifying them. This contrasts with axe.configure, which is more permanent.
-
-The keys consist of [those accepted by `axe.run`'s options argument](https://www.deque.com/axe/documentation/api-documentation/#parameters-axerun) as well as a custom `includedImpacts` key.
-
-The `includedImpacts` key is an array of strings that map to `impact` levels in violations. Specifying this array will only include violations where the impact matches one of the included values. Possible impact values are "minor", "moderate", "serious", or "critical".
-
-Filtering based on impact in combination with the `skipFailures` argument allows you to introduce `cypress-axe` into tests for a legacy application without failing in CI before you have an opportunity to address accessibility issues. Ideally, you would steadily move towards stricter testing as you address issues.
-
-##### violationsCallback (optional)
-
-Allows you to define a callback that receives the violations for custom side-effects, such as adding custom output to the terminal.
-
-**NOTE:** _This respects the `includedImpacts` filter and will only execute with violations that are included._
-
-##### skipFailures (optional, defaults to false)
-
-Disables assertions based on violations and only logs violations to the console output. This enabled you to see violations while allowing your tests to pass. This should be used as a temporary measure while you address accessibility violations.
-
-Reference : https://github.com/component-driven/cypress-axe/issues/17
-
-### Examples
-
-#### Basic usage
-
-```js
-// Basic usage
-it('Has no detectable a11y violations on load', () => {
-  // Test the page at initial load
-  cy.checkA11y()
-})
-
-// Applying a context and run parameters
-it('Has no detectable a11y violations on load (with custom parameters)', () => {
-  // Test the page at initial load (with context and options)
-  cy.checkA11y('.example-class', {
-    runOnly: {
-      type: 'tag',
-      values: ['wcag2a']
-    }
-  })
-})
-
-it('Has no detectable a11y violations on load (filtering to only include critical impact violations)', () => {
-  // Test on initial load, only report and assert for critical impact items
-  cy.checkA11y(null, {
-    includedImpacts: ['critical']
-  })
-})
-
-// Basic usage after interacting with the page
-it('Has no a11y violations after button click', () => {
-  // Interact with the page, then check for a11y issues
-  cy.get('button').click()
-  cy.checkA11y()
-})
-
-it('Only logs a11y violations while allowing the test to pass', () => {
-  // Do not fail the test when there are accessibility failures
-  cy.checkA11y(null, null, null, { skipFailures: true })
-})
-```
-
-#### Using the violationCallback argument
-
-The violation callback parameter accepts a function and allows you to add custom behavior when violations are found.
-
-This example adds custom logging to the terminal running Cypress, using `cy.task` and the `violationCallback` argument for `cy.checkA11y`
-
-##### In Cypress plugins file
-
-This registers a `log` task as seen in the [Cypress docs for cy.task](https://docs.cypress.io/api/commands/task.html#Usage) as well as a `table` task for sending tabular data to the terminal.
-
-```js
-module.exports = (on, config) => {
-  on('task', {
-    log(message) {
-      console.log(message)
-
-      return null
-    },
-    table(message) {
-      console.table(message)
-
-      return null
-    }
-  })
-}
-```
-
-#### In your spec file
-
-Then we create a function that uses our tasks and pass it as the `validationCallback` argument to `cy.checkA11y`
-
-```js
-// Define at the top of the spec file or just import it
-function terminalLog(violations) {
-  cy.task(
-    'log',
-    `${violations.length} accessibility violation${
-      violations.length === 1 ? '' : 's'
-    } ${violations.length === 1 ? 'was' : 'were'} detected`
-  )
-  // pluck specific keys to keep the table readable
-  const violationData = violations.map(
-    ({ id, impact, description, nodes }) => ({
-      id,
-      impact,
-      description,
-      nodes: nodes.length
-    })
-  )
-
-  cy.task('table', violationData)
-}
-
-// Then in your test...
-it('Logs violations to the terminal', () => {
-  cy.checkA11y(null, null, terminalLog)
-})
-```
-
-This custom logging behavior results in terminal output like this:
-
-![Custom terminal logging with cy.task and validationCallback](terminal_output_example.png)
-
-## Standard Output
-
-When accessibility violations are detected, your test will fail and an entry titled "A11Y ERROR!" will be added to the command log for each type of violation found (they will be above the failed assertion). Clicking on those will reveal more specifics about the error in the DevTools console.
-
-![Cypress and DevTools output for passing and failing axe-core audits](cmd_log.png)
 
 ## Authors
 
