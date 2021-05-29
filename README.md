@@ -56,19 +56,18 @@ module.exports = (on, config) => {
 > **NOTE**: You can control how results are displayed via [the `violationsCallback` config option](##cy.configureCypressAxe)
 
 After following the steps above (_and defining cy.tasks_), violations will be displayed as follows:
-- Cypress output
-![Default Cypress output](cypressOutputSample.png)
+- Cypress
+![Default Cypress output](assets/cypressOutputSample.png)
 
 - Terminal
-![Default terminal output](terminalOutputSample.png)
+![Default terminal output](assets/terminalOutputSample.png)
 
-- Browser console
-![Default browser console output](browserOutputSample.png)
-
+- Browser
+![Default browser console output](assets/browserOutputSample.png)
 
 
 ### TypeScript
-If you’re using TypeScript, add cypress-axe-core types to your Cypress’ `tsconfig.json` file:
+If you’re using TypeScript, add `cypress-axe-core` types to your Cypress’s `tsconfig.json` file:
 
 ```json
 {
