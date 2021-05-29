@@ -20,7 +20,6 @@ Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cy
     - [cy.configureCypressAxe](##cy.configureCypressAxe)
     - [cy.configureAxe](##cy.configureAxe)
 
-
 # Installation and Setup
 1. **Install** required packages
 ```sh
@@ -31,7 +30,7 @@ As its name implies, this package has two peer dependencies: [cypress](https://g
 npm install --save-dev cypress axe-core
 ```
 
-2. **Include the commands.** Update `cypress/support/index.js` file to include the cypress-axe commands by adding:
+2. **Include the commands.** Update `cypress/support/index.js` file to include the cypress-axe-core commands by adding:
 
 ```js
 import 'cypress-axe-core'
