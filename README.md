@@ -10,15 +10,15 @@ Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cy
 
 
 1. [Installation and Setup](#Installation-and-Setup)
-    - [Typescript](###TypeScript)
+    - [Typescript](#TypeScript)
 2. [Examples](#Examples)
-    - [Simple](##Simple)
-    - [Customised](##Customised)
+    - [Simple](#Simple)
+    - [Customised](#Customised)
 3. [Commands](#Commands)
-    - [cy.injectAxe](##cy.injectAxe)
-    - [cy.checkA11y](##cy.checkA11y)
-    - [cy.configureCypressAxe](##cy.configureCypressAxe)
-    - [cy.configureAxe](##cy.configureAxe)
+    - [cy.injectAxe](#cy.injectAxe)
+    - [cy.checkA11y](#cy.checkA11y)
+    - [cy.configureCypressAxe](#cy.configureCypressAxe)
+    - [cy.configureAxe](#cy.configureAxe)
 
 # Installation and Setup
 1. **Install** required packages
@@ -53,7 +53,7 @@ module.exports = (on, config) => {
 	});
 };
 ```
-> **NOTE**: You can control how results are displayed via [the `violationsCallback` config option](##cy.configureCypressAxe)
+> **NOTE**: You can control how results are displayed via [the `violationsCallback` config option](#cy.configureCypressAxe)
 
 After following the steps above (_and defining cy.tasks_), violations will be displayed as follows:
 - Cypress
@@ -152,7 +152,7 @@ beforeEach(() => {
 
 ## cy.checkA11y
 
-When not chained to another element, it will run against the whole document. You can have it at the end of your test (after other interaction assertions) so it checks against all possible violations. It accepts the same (optional) config object that [`cy.configureCypressAxe`](##cy.configureCypressAxe) accepts
+When not chained to another element, it will run against the whole document. You can have it at the end of your test (after other interaction assertions) so it checks against all possible violations. It accepts the same (optional) config object that [`cy.configureCypressAxe`](#cy.configureCypressAxe) accepts
 
 **Note**: if you have a toggle-able element i.e. a side menu, make sure it's on (shown) by the time `cy.checkA11y` is called, otherwise you might end up with some false-positive cases. Or, you can target those elements directly to make sure they're tested
 ```js
@@ -168,7 +168,7 @@ Instead of wrapping or overwriting `cy.checkA11y`, you can configure it. It acce
 - `skipFailures` if true, it will log the violations but not assert against them.
 - `violationsCallback` reporter function that receives the result.
 
-**The default** `violationsCallback` function assumes that `cy.task('log')` and `cy.task('table')` have been defined already during the [Installation & setup](##Installation-and-Setup). If you don't want to define those tasks, you can pass a function here to control how results are outputted.
+**The default** `violationsCallback` function assumes that `cy.task('log')` and `cy.task('table')` have been defined already during the [Installation & setup](#Installation-and-Setup). If you don't want to define those tasks, you can pass a function here to control how results are outputted.
 
 ```js
 cy.configureCypressAxe({
