@@ -22,8 +22,9 @@ declare global {
 
 export interface CypressAxeOptions {
 	axeOptions?: axe.RunOptions;
-	shouldFail?: (violations: axe.Result[]) => axe.Result[];
+	shouldFailFn?: (violations: axe.Result[]) => axe.Result[];
 	violationsCallback?(): typeof consoleReporter;
+	skipFailures?: boolean;
 }
 
 export interface RunResults {

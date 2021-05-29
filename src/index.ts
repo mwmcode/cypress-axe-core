@@ -8,8 +8,9 @@ import type { CypressAxeOptions } from './types';
 
 let defaultCypressAxeConfig = {
 	axeOptions: {},
-	shouldFail: (violations: axe.Result[]) => violations,
+	shouldFailFn: (violations: axe.Result[]) => violations,
 	violationsCb: consoleReporter,
+	skipFailures: false,
 };
 
 export const injectAxe = () => {
@@ -40,7 +41,7 @@ const checkA11y = (params: {
 	label?: string;
 }) => {
 	const { context, label } = params;
-	const { axeOptions, shouldFail, violationsCb } = {
+	const { axeOptions, shouldFailFn, violationsCb, skipFailures } = {
 		...defaultCypressAxeConfig,
 		...params.options,
 	};
@@ -53,7 +54,7 @@ const checkA11y = (params: {
 				.then(({ violations }) => violations);
 		})
 		.then((violations) => cy.wrap(violations, { log: false }))
-		.then((violations) => shouldFail(violations))
+		.then((violations) => shouldFailFn(violations))
 		.then((failableViolations) => {
 			if (failableViolations.length) {
 				violationsCb({
@@ -62,9 +63,13 @@ const checkA11y = (params: {
 					label,
 				});
 			}
-			return new Promise(resolve => resolve(failableViolations));
+			return cy.wrap(failableViolations, { log: false })
 		})
-		.then((failableViolations) => assertViolations(failableViolations as axe.Result[]));
+		.then((failableViolations) => {
+			if (!skipFailures) {
+				assertViolations(failableViolations as axe.Result[])
+			}
+		});
 };
 
 Cypress.Commands.add('injectAxe', injectAxe);
