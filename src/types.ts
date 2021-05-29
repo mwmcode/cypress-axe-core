@@ -1,6 +1,5 @@
 import axe from 'axe-core';
 import { injectAxe, configureAxe, configureCypressAxe } from '.';
-import { consoleReporter } from './utils'
 
 declare global {
 	interface Window {
@@ -22,9 +21,9 @@ declare global {
 
 export interface CypressAxeOptions {
 	axeOptions?: axe.RunOptions;
-	shouldFailFn?: (violations: axe.Result[]) => axe.Result[];
-	violationsCallback?(): typeof consoleReporter;
+	shouldFailFn?(violations: axe.Result[]): axe.Result[];
 	skipFailures?: boolean;
+	violationsCallback?(results: RunResults): void;
 }
 
 export interface RunResults {

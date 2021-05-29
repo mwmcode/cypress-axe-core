@@ -4,7 +4,9 @@ import {
 	consoleReporter,
 	isEmptyOrNullObject,
 } from './utils';
-import type { CypressAxeOptions } from './types';
+import type { CypressAxeOptions, RunResults } from './types';
+
+export { CypressAxeOptions, RunResults };
 
 let defaultCypressAxeConfig = {
 	axeOptions: {},
