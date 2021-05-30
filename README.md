@@ -21,24 +21,20 @@ Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cy
     - [cy.configureAxe](#cyconfigureAxe)
 
 # Installation and Setup
-1. **Install** required packages
+1. **Install** required packages. Assuming you have Cypress installed already, you will only need to:
+
 ```sh
-npm install --save-dev cypress-axe-core
-```
-As its name implies, this package has two peer dependencies: [cypress](https://github.com/cypress-io) and [axe-core](https://github.com/dequelabs/axe-core)
-```sh
-npm install --save-dev cypress axe-core
+npm install --save-dev axe-core cypress-axe-core
 ```
 
-2. **Include the commands.** Update `cypress/support/index.js` file to include the cypress-axe-core commands by adding:
+2. **Include** the commands by importing `cypress-axe-core` in `cypress/support/index.js` file:
 
 ```js
 import 'cypress-axe-core'
 ```
 
-3. **Enable logging results to terminal** by defining _logging_ tasks in cypress `plugins/index.js`.
+3. **Enable** results logging by defining cy.tasks in `cypress/plugins/index.js` file:
 ```js
-// cypress/plugins/index.js
 module.exports = (on, config) => {
 	on('task', {
 		log(message) {
