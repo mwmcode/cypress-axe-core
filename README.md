@@ -6,7 +6,10 @@ Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cy
 
 > ### Forked from [cypress-axe](https://github.com/component-driven/cypress-axe) ⑂
 >
-> **Reasons**: to upgrade dependencies (i.e. `Cypress ^7` & `axe-core ^4`) and try out some of the suggesions in [RFC 75](https://github.com/component-driven/cypress-axe/issues/75) 👀
+> **Reasons**:
+>
+> - to upgrade dependencies (i.e. `Cypress ^7` & `axe-core ^4`)
+> - [RFC 75](https://github.com/component-driven/cypress-axe/issues/75) 👀
 
 1. [Installation and Setup](#Installation-and-Setup)
    - [Typescript](#TypeScript)
@@ -94,8 +97,8 @@ it('passes axe', () => {
 
 ## Customised
 
-Leveraging [Cypress commands](https://docs.cypress.io/api/cypress-api/custom-commands), you can create your own custom command that calls `cy.checkA11y` with the config you want.
-For example, if you only want to assert against _serious_ & _critical_ violations but ignore _color-contrast_ rule, you can do something like this:
+Leveraging [Cypress commands](https://docs.cypress.io/api/cypress-api/custom-commands), you can create your own custom command that calls `cy.checkA11y` with the config you want. For example, if you only want to assert against _serious_ & _critical_ violations but ignore _color-contrast_ rule, you can do something like this:
+
 ```js
 // cypress/support/commands.js
 Cypress.Commands.add(
