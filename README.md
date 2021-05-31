@@ -8,19 +8,19 @@ Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cy
 >
 > **Reasons**: to upgrade dependencies (i.e. `Cypress ^7` & `axe-core ^4`) and try out some of the suggesions in [RFC 75](https://github.com/component-driven/cypress-axe/issues/75) 👀
 
-
 1. [Installation and Setup](#Installation-and-Setup)
-    - [Typescript](#TypeScript)
+   - [Typescript](#TypeScript)
 2. [Examples](#Examples)
-    - [Simple](#Simple)
-    - [Customised](#Customised)
+   - [Simple](#Simple)
+   - [Customised](#Customised)
 3. [Commands](#Commands)
-    - [cy.injectAxe](#cyinjectAxe)
-    - [cy.checkA11y](#cycheckA11y)
-    - [cy.configureCypressAxe](#cyconfigureCypressAxe)
-    - [cy.configureAxe](#cyconfigureAxe)
+   - [cy.injectAxe](#cyinjectAxe)
+   - [cy.checkA11y](#cycheckA11y)
+   - [cy.configureCypressAxe](#cyconfigureCypressAxe)
+   - [cy.configureAxe](#cyconfigureAxe)
 
 # Installation and Setup
+
 1. **Install** required packages. Assuming you have Cypress installed already, you will only need to:
 
 ```sh
@@ -34,35 +34,35 @@ import 'cypress-axe-core'
 ```
 
 3. **Enable** results logging by defining cy.tasks in `cypress/plugins/index.js` file:
+
 ```js
 module.exports = (on, config) => {
-	on('task', {
-		log(message) {
-			console.log(message);
-			return null;
-		},
+  on('task', {
+    log(message) {
+      console.log(message)
+      return null
+    },
 
-		table(message) {
-			console.table(message);
-			return null;
-		},
-	});
-};
+    table(message) {
+      console.table(message)
+      return null
+    }
+  })
+}
 ```
+
 > **NOTE**: You can control how results are displayed via [the `violationsCallback` config option](#cyconfigureCypressAxe)
 
 After following the steps above (_and defining cy.tasks_), violations will be displayed as follows:
-- Cypress
-![Default Cypress output](assets/cypressOutputSample.png)
 
-- Terminal
-![Default terminal output](assets/terminalOutputSample.png)
+- Cypress ![Default Cypress output](assets/cypressOutputSample.png)
 
-- Browser
-![Default browser console output](assets/browserOutputSample.png)
+- Terminal ![Default terminal output](assets/terminalOutputSample.png)
 
+- Browser ![Default browser console output](assets/browserOutputSample.png)
 
 ### TypeScript
+
 If you’re using TypeScript, add `cypress-axe-core` types to your Cypress’s `tsconfig.json` file:
 
 ```json
@@ -94,20 +94,15 @@ it('passes axe', () => {
 
 ## Customised
 
-Leveraging ([Cypress commands](https://docs.cypress.io/api/cypress-api/custom-commands)) You can either:
-
-- Overwrite `cy.checkA11y` _or_
-- Wrap it in your own custom command
-
-then pass it a `shouldFailFn` function to decide which rules should fail. For example, only assert against _serious_ & _critical_ violations but ignore _color-contrast_ rule.
-
+Leveraging [Cypress commands](https://docs.cypress.io/api/cypress-api/custom-commands), you can create your own custom command that calls `cy.checkA11y` with the config you want.
+For example, if you only want to assert against _serious_ & _critical_ violations but ignore _color-contrast_ rule, you can do something like this:
 ```js
 // cypress/support/commands.js
 Cypress.Commands.add(
   'checkAxeViolations',
   { prevSubject: 'optional' },
-  (subject, options, label) => {
-    return cy.checkA11y(
+  (context, options, label) => {
+    cy.wrap(context).checkA11y(
       {
         shouldFailFn: violations =>
           violations.filter(
@@ -151,14 +146,16 @@ beforeEach(() => {
 When not chained to another element, it will run against the whole document. You can have it at the end of your test (after other interaction assertions) so it checks against all possible violations. It accepts the same (optional) config object that [`cy.configureCypressAxe`](#cyconfigureCypressAxe) accepts
 
 **Note**: if you have a toggle-able element i.e. a side menu, make sure it's on (shown) by the time `cy.checkA11y` is called, otherwise you might end up with some false-positive cases. Or, you can target those elements directly to make sure they're tested
+
 ```js
-cy.get('#menu-button').click();
+cy.get('#menu-button').click()
 cy.get('#side-menu-container').checkA11y()
 ```
 
 ## cy.configureCypressAxe
 
 Instead of wrapping or overwriting `cy.checkA11y`, you can configure it. It accepts the following:
+
 - `axeOptions` passed to axe-core.
 - `shouldFailFn` function that returns array of violations to check for.
 - `skipFailures` if true, it will log the violations but not assert against them.
