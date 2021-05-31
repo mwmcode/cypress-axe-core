@@ -55,7 +55,6 @@ const checkA11y = (params: {
 				.run(subject || win.document, axeOptions)
 				.then(({ violations }) => violations);
 		})
-		.then((violations) => cy.wrap(violations, { log: false }))
 		.then((violations) => shouldFailFn(violations))
 		.then((failableViolations) => {
 			if (failableViolations.length) {
@@ -65,11 +64,11 @@ const checkA11y = (params: {
 					label,
 				});
 			}
-			return cy.wrap(failableViolations, { log: false })
+			return cy.wrap(failableViolations, { log: false });
 		})
 		.then((failableViolations) => {
 			if (!skipFailures) {
-				assertViolations(failableViolations as axe.Result[])
+				assertViolations(failableViolations);
 			}
 		});
 };

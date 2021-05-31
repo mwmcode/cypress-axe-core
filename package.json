@@ -27,7 +27,8 @@
     "cypress:headless": "cypress run --browser chrome --headless",
     "test:e2e": "start-server-and-test start 8080 cypress",
     "test:e2e:ci": "start-server-and-test start 8080 cypress:headless",
-    "semantic-release": "semantic-release --branches main"
+    "semantic-release": "semantic-release --branches main",
+    "prepare": "husky install"
   },
   "engines": {
     "node": ">=12"
@@ -46,7 +47,7 @@
     "eslint": "^7.27.0",
     "eslint-config-tamia": "^7.2.6",
     "http-server": "^0.12.3",
-    "husky": "^4.3.0",
+    "husky": "^6.0.0",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
     "semantic-release": "^17.4.3",
@@ -70,14 +71,9 @@
     "axe-core",
     "cypress"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "*.js": "eslint --cache --fix",
-    "*.{js,md}": "prettier --write"
+    "**/*.{js,ts}": "eslint --cache --fix",
+    "**/*.{js,ts,md}": "prettier --write"
   },
   "config": {
     "commitizen": {
