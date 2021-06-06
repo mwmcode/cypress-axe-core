@@ -160,6 +160,7 @@ cy.get('#side-menu-container').checkA11y()
 Instead of wrapping or overwriting `cy.checkA11y`, you can configure it. It accepts the following:
 
 - `axeOptions` passed to axe-core.
+- `axeContext` context to check for violations against (note: _chaining i.e. `cy.get('button').checkA11y()` will override this_).
 - `shouldFailFn` function that returns array of violations to check for.
 - `skipFailures` if true, it will log the violations but not assert against them.
 - `violationsCallback` reporter function that receives the result.
@@ -169,6 +170,7 @@ Instead of wrapping or overwriting `cy.checkA11y`, you can configure it. It acce
 ```js
 cy.configureCypressAxe({
   axeOptions: [], // axe.RunOptions[]
+  axeContext: undefined, // defaults to window
   shouldFailFn: violations => violations,
   skipFailures: false,
   violationsCallback: ({

@@ -43,7 +43,7 @@ const checkA11y = (params: {
 	label?: string;
 }) => {
 	const { context, label } = params;
-	const { axeOptions, shouldFailFn, violationsCb, skipFailures } = {
+	const { axeContext, axeOptions, shouldFailFn, violationsCb, skipFailures } = {
 		...defaultCypressAxeConfig,
 		...params.options,
 	};
@@ -52,7 +52,7 @@ const checkA11y = (params: {
 		.then((win) => {
 			const subject = isEmptyOrNullObject(context) ? undefined : context;
 			return win.axe
-				.run(subject || win.document, axeOptions)
+				.run(subject || axeContext || win.document, axeOptions)
 				.then(({ violations }) => violations);
 		})
 		.then((violations) => shouldFailFn(violations))

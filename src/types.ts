@@ -20,6 +20,7 @@ declare global {
 }
 
 export interface CypressAxeOptions {
+	axeContext?: axe.ElementContext;
 	axeOptions?: axe.RunOptions;
 	shouldFailFn?(violations: axe.Result[]): axe.Result[];
 	skipFailures?: boolean;
@@ -27,7 +28,7 @@ export interface CypressAxeOptions {
 }
 
 export interface RunResults {
-  filename: string,
-  results: axe.Result[]
-  label?: string,
+	filename: string;
+	results: axe.Result[];
+	label?: string;
 }
