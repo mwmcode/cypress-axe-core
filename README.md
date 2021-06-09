@@ -89,9 +89,12 @@ it('passes axe', () => {
   cy.visit('/')
   cy.injectAxe()
   // ...
-  cy.get('.my-button').checkA11y() // target certain elements
-  // OR
-  cy.checkA11y() // check the whole document
+
+  cy.checkA11y() // checks the whole document
+  
+  cy.get('#mobile-menu').checkA11y() // checks id="mobile-menu only
+  
+  cy.wrap({ exclude: ['.not-me']}).checkA11y() // checks the whole document except class=".not-me"
 })
 ```
 
