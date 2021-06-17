@@ -54,7 +54,7 @@ module.exports = (on, config) => {
 }
 ```
 
-> **NOTE**: You can control how results are displayed via [the `violationsCallback` config option](#cyconfigureCypressAxe)
+> **NOTE**: You can control how results are displayed via [the `violationsCb` config option](#cyconfigureCypressAxe)
 
 After following the steps above (_and defining cy.tasks_), violations will be displayed as follows:
 
@@ -91,10 +91,10 @@ it('passes axe', () => {
   // ...
 
   cy.checkA11y() // checks the whole document
-  
+
   cy.get('#mobile-menu').checkA11y() // checks id="mobile-menu only
-  
-  cy.wrap({ exclude: ['.not-me']}).checkA11y() // checks the whole document except class=".not-me"
+
+  cy.wrap({ exclude: ['.not-me'] }).checkA11y() // checks the whole document except class=".not-me"
 })
 ```
 
@@ -165,16 +165,16 @@ Instead of wrapping or overwriting `cy.checkA11y`, you can configure it. It acce
 - `axeOptions` passed to axe-core.
 - `shouldFailFn` function that returns array of violations to check for.
 - `skipFailures` if true, it will log the violations but not assert against them.
-- `violationsCallback` reporter function that receives the result.
+- `violationsCb` reporter function that receives the result.
 
-**The default** `violationsCallback` function assumes that `cy.task('log')` and `cy.task('table')` have been defined already during the [Installation & setup](#Installation-and-Setup). If you don't want to define those tasks, you can pass a function here to control how results are outputted.
+**The default** `violationsCb` function assumes that `cy.task('log')` and `cy.task('table')` have been defined already during the [Installation & setup](#Installation-and-Setup). If you don't want to define those tasks, you can pass a function here to control how results are outputted.
 
 ```js
 cy.configureCypressAxe({
   axeOptions: [], // axe.RunOptions[]
   shouldFailFn: violations => violations,
   skipFailures: false,
-  violationsCallback: ({
+  violationsCb: ({
     filename: 'test.spec.ts', // spec filename
     results: [], // violations axe.Result[]
     label: 'my custom component', // if passed to checkA11y

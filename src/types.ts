@@ -23,11 +23,11 @@ export interface CypressAxeOptions {
 	axeOptions?: axe.RunOptions;
 	shouldFailFn?(violations: axe.Result[]): axe.Result[];
 	skipFailures?: boolean;
-	violationsCallback?(results: RunResults): void;
+	violationsCb?(results: RunResults): void;
 }
 
 export interface RunResults {
-  filename: string,
-  results: axe.Result[]
-  label?: string,
+	filename: string;
+	results: axe.Result[];
+	label?: string;
 }

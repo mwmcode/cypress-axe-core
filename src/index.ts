@@ -6,7 +6,7 @@ import {
 } from './utils';
 import type { CypressAxeOptions, RunResults } from './types';
 
-export { CypressAxeOptions, RunResults };
+export { CypressAxeOptions, RunResults, consoleReporter };
 
 let defaultCypressAxeConfig = {
 	axeOptions: {},
