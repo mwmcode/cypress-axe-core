@@ -3,7 +3,7 @@
 > 👀 watch [RFC 75](https://github.com/component-driven/cypress-axe/issues/75)
 >
 > TODO: update example
->
+
 # cypress-axe
 
 [![npm](https://img.shields.io/npm/v/cypress-axe.svg)](https://www.npmjs.com/package/cypress-axe) [![Node.js CI status](https://github.com/component-driven/cypress-axe/workflows/Node.js%20CI/badge.svg)](https://github.com/component-driven/cypress-axe/actions)
@@ -162,10 +162,8 @@ it('Has no a11y violations after button click', () => {
 
 it('Only logs a11y violations while allowing the test to pass', () => {
   // Do not fail the test when there are accessibility failures
-  cy.checkA11y(null, null, null, {skipFailures: true});
+  cy.checkA11y(null, null, null, { skipFailures: true })
 })
-
-
 ```
 
 #### Using the violationCallback argument
