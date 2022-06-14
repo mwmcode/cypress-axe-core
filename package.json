@@ -31,28 +31,28 @@
     "prepare": "husky install"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=14"
   },
   "peerDependencies": {
-    "axe-core": "^3 || ^4",
-    "cypress": "^5 || ^6 || ^7 || ^8"
+    "axe-core": ">=3",
+    "cypress": ">=3"
   },
   "devDependencies": {
-    "@types/node": "^16.4.0",
-    "@typescript-eslint/eslint-plugin": "^4.28.4",
-    "@typescript-eslint/parser": "^4.28.4",
+    "@types/node": "^17.0.42",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
     "axe-core": "^4",
-    "cypress": "^7",
+    "cypress": "^10",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^7.31.0",
-    "eslint-config-tamia": "^7.2.6",
-    "http-server": "^0.12.3",
-    "husky": "^7.0.1",
-    "lint-staged": "^11.1.0",
-    "prettier": "^2.3.2",
-    "semantic-release": "^17.4.4",
-    "start-server-and-test": "^1.12.6",
-    "typescript": "^4.3.5"
+    "eslint": "^8.17.0",
+    "eslint-config-tamia": "^8.0.0",
+    "http-server": "^14.1.1",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.1",
+    "prettier": "^2.6.2",
+    "semantic-release": "^19.0.3",
+    "start-server-and-test": "^1.14.0",
+    "typescript": "^4.7.3"
   },
   "authors": [
     {

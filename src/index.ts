@@ -1,4 +1,4 @@
-import axe from 'axe-core';
+import axe, { ElementContext } from 'axe-core';
 import {
 	assertViolations,
 	consoleReporter,
@@ -82,8 +82,9 @@ Cypress.Commands.add('configureCypressAxe', configureCypressAxe);
 
 Cypress.Commands.add(
 	'checkA11y',
+	// @ts-ignore
 	{ prevSubject: 'optional' },
-	(context, options?: CypressAxeOptions, label?: string) => {
+	(context?: ElementContext, options?: CypressAxeOptions, label?: string) => {
 		checkA11y({ context, options, label });
 	}
 );
