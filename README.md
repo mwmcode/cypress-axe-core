@@ -4,7 +4,8 @@
 
 Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cypress](https://cypress.io).
 
-## ⚠️ UPDATE: [cypress-axe](https://github.com/component-driven/cypress-axe) now supports Cypress 8 ([latest release](https://github.com/component-driven/cypress-axe/releases/tag/v0.13.0)).
+## ⚠️ UPDATE: [cypress-axe](https://github.com/component-driven/cypress-axe) now supports Cypress 8 ([latest release](https://github.com/component-driven/cypress-axe/releases/tag/v0.13.0)). So you should consider using/switching to the orignal package.
+
 > ### Forked from [cypress-axe](https://github.com/component-driven/cypress-axe) ⑂
 >
 > **Reasons**:
