@@ -32,7 +32,7 @@ Test accessibility with [axe-core](https://github.com/dequelabs/axe-core) in [Cy
 npm install --save-dev axe-core cypress-axe-core
 ```
 
-2. **Include** the commands by importing `cypress-axe-core` in `cypress/support/index.js` file:
+2. **Include** the commands by importing `cypress-axe-core` in `cypress/support/e2e.js` file:
 
 ```js
 import 'cypress-axe-core'
@@ -125,7 +125,7 @@ Cypress.Commands.add(
   }
 )
 
-// some.spec.js
+// some.py.js
 it('passes custom axe tests', () => {
   cy.visit('/')
   cy.injectAxe()
@@ -177,7 +177,7 @@ cy.configureCypressAxe({
   shouldFailFn: violations => violations,
   skipFailures: false,
   violationsCb: ({
-    filename: 'test.spec.ts', // spec filename
+    filename: 'test.py.ts', // spec filename
     results: [], // violations axe.Result[]
     label: 'my custom component', // if passed to checkA11y
   }) => void,
